@@ -10,4 +10,12 @@ const validateUser = (user) => {
     return schema.validate(user);
 };
 
-module.exports = {validateUser};
+const validateUpdateUser = (user) => {
+    const schema = Joi.object({
+        email: Joi.string().email(),
+        role: Joi.string().valid('admin','user')
+    });
+    return schema.validate(user);
+};
+
+module.exports = {validateUser, validateUpdateUser};
