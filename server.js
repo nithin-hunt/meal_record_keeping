@@ -6,14 +6,16 @@ const connectDB = require('./config/db');
 
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
+const forgotPasswordRoutes = require('./routes/forgotPassword');
 
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.use("/api", userRoutes);
-app.use("/api", adminRoutes);
+app.use("/api/v1", userRoutes);
+app.use("/api/v1", adminRoutes);
+app.use("/api/v1/forgot-password", forgotPasswordRoutes);
 
 const start = async() => {
     try {
