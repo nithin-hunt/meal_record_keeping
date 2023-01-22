@@ -5,7 +5,7 @@ const validateUser = (user) => {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         password: passwordComplexity().required(),
-        isAdmin: Joi.boolean()
+        role: Joi.string().valid('admin','user')
     });
     return schema.validate(user);
 };

@@ -54,7 +54,7 @@ router.post("/login", async(req,res) => {
             return res.status(400).json({Message: "Invalid email or password"});
         }
 
-        const payload = { _id: user._id};
+        const payload = { _id: user._id, role: user.role};
         const bearerToken = await jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "1d",});
 
         res.cookie('t', bearerToken, {expire: new Date() + 9999});
