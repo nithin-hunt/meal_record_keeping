@@ -71,9 +71,7 @@ router.get("/", auth, async(req,res) => {
         .skip(page * limit)
         .limit(limit);
 
-        const total = await Meal.countDocuments({
-            name: { $regex: search, $options: "i" },
-        });
+        const total = meals.length;
 
         const results = {
             total,
