@@ -27,6 +27,15 @@ const validateUpdateUser = (user) => {
     return schema.validate(user);
 };
 
+const validateUpdateMeal = (meal) => {
+    const schema = Joi.object({
+        name: Joi.string(),
+        time: Joi.string(),
+        calorie: Joi.number().allow("")
+    });
+    return schema.validate(meal);
+};
+
 const validateEmail = (userEmail) => {
     const schema = Joi.object({
         email: Joi.string().email().required(),
@@ -41,4 +50,4 @@ const validatePassword = (userPassword) => {
     return schema.validate({password: userPassword});
 };
 
-module.exports = {validateUser, validateMeal, validateUpdateUser, validateEmail, validatePassword};
+module.exports = {validateUser, validateMeal, validateUpdateUser, validateUpdateMeal, validateEmail, validatePassword};
