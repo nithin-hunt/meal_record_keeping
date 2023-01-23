@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use("/api/v1", userRoutes);
-app.use("/api/v1", adminRoutes);
+app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/forgot-password", forgotPasswordRoutes);
 app.use("/api/v1/meals", mealsRoutes)
 
