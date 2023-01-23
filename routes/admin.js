@@ -2,7 +2,6 @@ const router = require('express').Router();
 const User = require('../models/userModel');
 const Meal = require('../models/mealModel');
 const authAdmin = require('../middlewares/authAdmin');
-const paginatedResults = require('../middlewares/paginatedResults');
 const isUserExists = require('../middlewares/isUserExists');
 const {validateUpdateUser} = require('../utils/validators')
 
@@ -11,8 +10,7 @@ router.get("/users", [authAdmin], async (req,res) => {
     try {
         // const users = await User.find().select("-password -__v");
         const page = parseInt(req.query.page) - 1 || 0;
-		const limit = parseInt(req.query.limit) || 5;
-		const search = req.query.search || "";
+		const limit = parseInt(req.query.limit);
         let role = req.query.role || "All";
 
         const roleOptions = [

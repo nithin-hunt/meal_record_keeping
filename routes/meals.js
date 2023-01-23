@@ -59,9 +59,45 @@ router.post("/", auth, async(req,res) => {
 // Get meals
 router.get("/", auth, async(req,res) => {
     try {
+        
+        const page = parseInt(req.query.page) - 1 || 0;
+		const limit = parseInt(req.query.limit);
+		const search = req.query.search || "";
+        
+        
         const user = await User.findById(req.user._id);
-        const meals = await Meal.find({_id: user.meals});
-        res.status(200).json(meals);
+        const meals = await Meal.find({_id: user.meals})
+        .where({ name: { $regex: search, $options: "i" } })
+        .skip(page * limit)
+        .limit(limit);
+
+        const total = await Meal.countDocuments({
+            name: { $regex: search, $options: "i" },
+        });
+
+        const results = {
+            total,
+            page: page + 1,
+            limit,
+            meals,
+        }
+        
+        const startIndex = page * limit
+        const endIndex = (page+1) * limit
+        
+        if(endIndex < total) {
+            results.next = {
+                page: page+2
+            }
+        }
+        
+        if(startIndex > 0) {
+            results.previous = {
+                page: page                
+            }
+        }
+
+	    res.status(200).json(results);
     } catch (e) {
         return res.status(500).json({Error: e.message})
     }
