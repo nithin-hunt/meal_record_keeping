@@ -97,4 +97,21 @@ router.put("/:id", [auth, isMealIdValid], async(req,res) => {
     }
 })
 
+//Delete meal by id
+router.delete("/:id", [auth, isMealIdValid], async(req,res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        const index= user.meals.indexOf(req.params.id);
+        user.meals.splice(index, 1);
+        await user.save();
+
+        const meal = await Meal.findById(req.params.id);
+        await meal.remove();
+
+        return res.status(200).json("Meal removed successfully")
+    } catch (e) {
+        return res.status(500).json({Error: e.message});
+    }
+})
+
 module.exports = router;
