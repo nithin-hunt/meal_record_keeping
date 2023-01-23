@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Meal = require('../models/mealModel');
 const User = require('../models/userModel')
 
-const isMealExists = async (req,res,next) => {
+const isMealIdValid = async (req,res,next) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(404).json("Invalid Meal ID");
@@ -24,4 +24,4 @@ const isMealExists = async (req,res,next) => {
     }
 }
 
-module.exports = isMealExists;
+module.exports = isMealIdValid;

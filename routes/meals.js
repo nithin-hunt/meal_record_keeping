@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const Meal = require('../models/mealModel')
 const {validateMeal, validateUpdateMeal} = require('../utils/validators');
 const auth = require('../middlewares/auth');
-const isMealExists = require('../middlewares/isMealExists');
+const isMealIdValid = require('../middlewares/isMealIdValid');
 const fetch = require('node-fetch');
 
 // Post meal
@@ -68,7 +68,7 @@ router.get("/", auth, async(req,res) => {
 })
 
 // Get meal by id
-router.get("/:id", [auth, isMealExists], async(req,res) => {
+router.get("/:id", [auth, isMealIdValid], async(req,res) => {
     try {
         const meal = await Meal.findById(req.params.id);
         res.status(200).json(meal);
@@ -78,7 +78,7 @@ router.get("/:id", [auth, isMealExists], async(req,res) => {
 })
 
 // Update meal by id
-router.put("/:id", [auth, isMealExists], async(req,res) => {
+router.put("/:id", [auth, isMealIdValid], async(req,res) => {
     try {
         const {error} = validateUpdateMeal(req.body);
         if(error){
