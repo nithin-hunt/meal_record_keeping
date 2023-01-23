@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/userModel');
+const Meal = require('../models/mealModel');
 const authAdmin = require('../middlewares/authAdmin');
 const isUserExists = require('../middlewares/isUserExists');
 const {validateUpdateUser} = require('../utils/validators')
@@ -44,9 +45,12 @@ router.put("/users/:id", [isUserExists, authAdmin], async (req, res) => {
 });
 
 // delete user by id
-router.delete("/users/:id", [isUserExists, authAdmin], async (req, res) => {
+router.delete("/users/:id", [authAdmin, isUserExists], async (req, res) => {
     try {
+        const user = await User.findById(req.params.id);
+        await Meal.deleteMany({_id: user.meals});
         await User.findByIdAndDelete(req.params.id);
+
         res.status(200).json("Successfully deleted user...");
     } catch(e) {
         return res.status(500).json({Error: e.message});
