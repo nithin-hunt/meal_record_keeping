@@ -10,7 +10,7 @@ const mealSchema = new mongoose.Schema({
         required: [true, "Must provide Time"],
     },
     calorie: {
-        type: String,
+        type: Number,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

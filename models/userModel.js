@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'user',
+    },
+    meals: {
+        type: [mongoose.Schema.Types.ObjectId],
+        default: [],
+        ref: 'meal'
     }
 });
 
