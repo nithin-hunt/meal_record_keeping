@@ -11,7 +11,7 @@ router.get("/users", [authAdmin], async (req,res) => {
     try {
         // const users = await User.find().select("-password -__v");
         const page = parseInt(req.query.page) - 1 || 0;
-		const limit = parseInt(req.query.limit);
+		const limit = parseInt(req.query.limit) || 5;
         let role = req.query.role || "All";
 
         const roleOptions = [
@@ -109,7 +109,7 @@ router.get("/meals", authAdmin, async(req,res) => {
     try {
         
         const page = parseInt(req.query.page) - 1 || 0;
-		const limit = parseInt(req.query.limit);
+		const limit = parseInt(req.query.limit) || 5;
 		const search = req.query.search || "";
         
         const meals = await Meal.find()
