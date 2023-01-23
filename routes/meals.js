@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 const Meal = require('../models/mealModel')
 const {validateMeal} = require('../utils/validators');
 const auth = require('../middlewares/auth');
+const isMealExists = require('../middlewares/isMealExists');
 const fetch = require('node-fetch');
 
 // Post meal
@@ -36,7 +37,6 @@ router.post("/", auth, async(req,res) => {
         if(calorie === 0) {
             calorie = 250
         }
-
     }
     
     const user = await User.findById(req.user._id);
@@ -49,13 +49,32 @@ router.post("/", auth, async(req,res) => {
 
     user.meals.push(meal._id);
     await user.save();
-    
-    return res.status(201).json(meal);
 
+    return res.status(201).json(meal);
   } catch(e) {
         return res.status(500).json({Error: e.message});
   }
 });
 
+// Get meals
+router.get("/", auth, async(req,res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        const meals = await Meal.find({_id: user.meals});
+        res.status(200).json(meals);
+    } catch (e) {
+        return res.status(500).json({Error: e.message})
+    }
+})
+
+// Get meal by id
+router.get("/:id", [auth, isMealExists], async(req,res) => {
+    try {
+        const meal = await Meal.findById(req.params.id);
+        res.status(200).json(meal);
+    } catch (e) {
+        return res.status(500).json({Error: e.message});
+    }
+})
 
 module.exports = router;
